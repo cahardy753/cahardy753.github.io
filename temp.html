@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calvin Heckaton 2024</title>
+    <style>
+
+    </style>
+</head>
+<body>
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "https://unpkg.com/three@0.161.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.161.0/examples/jsm/"
+          }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+        camera.position.set(9, 1.5, 3);
+
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( renderer.domElement );
+
+        const geometry = new THREE.PlaneGeometry( 10, 1 );
+        const material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+        const plane = new THREE.Mesh( geometry, material );
+        plane.position.x = 7;
+        scene.add( plane );
+
+        function animation() {
+            requestAnimationFrame( animation );
+	        renderer.render( scene, camera );
+        }
+
+        animation();
+
+
+    </script>
+
+</body>
+</html>
