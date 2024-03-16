@@ -31,6 +31,8 @@
         renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( renderer.domElement );
 
+	    
+	//Basic Backgrounds
         var geometry = new THREE.PlaneGeometry( 6, 6 );
         var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
         var floor = new THREE.Mesh( geometry, material );
@@ -51,6 +53,9 @@
         ceiling.position.y = 2.5;
         ceiling.position.z = 3;
         scene.add( ceiling );
+
+	//3D Models
+	//goes from here
         
         document.addEventListener("keydown", onDocumentKeyDown, false); //For key binding
 
