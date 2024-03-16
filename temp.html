@@ -110,6 +110,18 @@
         scene.add( wallBack );
 
 	//3D Models
+	const loader = new GLTFLoader();
+        loader.load( 'CHEST_OF_DRAWER.glb', function ( gltf ) {
+            var drawer = gltf.scene;
+            drawer.scale.set(.7,.7,.7);
+            drawer.position.y = .21;
+            drawer.position.x = .25;
+            drawer.position.z = .55;
+            drawer.rotation.y = (-Math.PI/2);
+            scene.add(drawer);
+        }, undefined, function ( error ) {
+	        console.error( error );
+        } );
 	//goes from here
         
         document.addEventListener("keydown", onDocumentKeyDown, false); //For key binding
