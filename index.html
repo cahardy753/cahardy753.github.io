@@ -27,6 +27,18 @@
     <div id="rightB" style="position: absolute; bottom: 50%; left: 95%; transform: translateX(-50%); margin-bottom: -30px;">
         <input type = 'image' class="btnClaim" src="UIs/camRB.png" style="width: 70px; height: auto;">
     </div>
+    <div id="inspect" style="position: absolute; bottom: 40%; left: 75%; transform: translateX(-50%); margin-bottom: -30px;">
+        <image class="btnClaim" src="UIs/mag.png" style="width: 50px; height: auto;">
+    </div>
+    <div id="temp" style="position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%); margin-bottom: -30px;">
+        <image class="btnClaim" src="UIs/inven.png" style="width: 700px; height: auto;">
+    </div>
+    <div id="closeB" style="position: absolute; bottom: 70%; left: 65%; transform: translateX(-50%); margin-bottom: -30px;">
+        <input type = 'image' class="btnClaim" src="UIs/close.png" style="width: 70px; height: auto;">
+    </div>
+    <div id="letter" style="position: absolute; bottom: 88.5%; left: 7%; transform: translateX(-50%); margin-bottom: -30px;">
+        <input type = 'image' class="btnClaim" src="UIs/close.png" style="width: 30px; height: auto;">
+    </div>
 	
     <script type="importmap">
         {
@@ -43,15 +55,21 @@
         import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 	//UI configs
-        invenA.style.display = 'block';
-        invenB.style.display = 'block';
-        invenC.style.display = 'block';
-        invenD.style.display = 'block';
+        inspect.style.display = 'none';
+        temp.style.display = 'none';
+        closeB.style.display = 'none';
+        letter.style.display = 'none';
 
         leftB.addEventListener('click', toggleCamL);
-        leftB.style.display = 'block';
         rightB.addEventListener('click', toggleCamR);
-        rightB.style.display = 'block';
+        closeB.addEventListener('click', closeScr);
+        letter.addEventListener('click', letterOpen);
+
+	//scene & raycaster
+        var raycaster = new THREE.Raycaster();
+        var ptr = new THREE.Vector2();
+        window.addEventListener( 'mousemove', onPtrMove );
+        window.addEventListener( 'click', onClick );
 	
         var scene = new THREE.Scene(); //create scene
         var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 ); //create camera
@@ -142,6 +160,13 @@
         wallBack.rotation.y = Math.PI;
         scene.add( wallBack );
 
+	//dummy
+        geometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
+        var material = new THREE.MeshBasicMaterial( { color: 0xff0f00 } );
+        const cube = new THREE.Mesh( geometry, material );
+        cube.position.y = -100;
+        scene.add( cube );
+
 	//3D Models
 	const loader = new GLTFLoader();
         //load small lamp
@@ -220,6 +245,50 @@
             camera.rotation.y += -Math.PI / 2;
         }
 
+	//raycaster fcns
+        function onPtrMove(event) {
+            ptr.x = (event.clientX / window.innerWidth) * 2 - 1;
+            ptr.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            intersects = raycaster.intersectObjects(interactObjs, true);
+            raycaster.setFromCamera(ptr, camera);
+
+            for (const intersect of intersects) {
+                console.log(intersect.object);
+                if (intersect.object === cube) {
+                    return;
+                } else {
+                    inspect.style.display = 'block';
+                    console.log(intersect.object);
+                    return;
+                }
+            }
+
+            // Reset
+            inspect.style.display = 'none';
+        }
+
+        function onClick() {
+            for (const intersect of intersects) {
+                if (intersect.object === cube) {
+                    return;
+                } else {
+                    temp.style.display = 'block';
+                    closeB.style.display = 'block';
+                    drawerOpened = true;
+                    return;
+                }
+            }
+        }
+
+        function closeScr() {
+            temp.style.display = 'none';
+            closeB.style.display = 'none';
+        }
+
+        function letterOpen(){ 
+            temp.style.display = 'block';
+            closeB.style.display = 'block';
+        }
 
         function animation() {
             requestAnimationFrame( animation );
