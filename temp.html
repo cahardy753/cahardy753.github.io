@@ -9,6 +9,25 @@
     </style>
 </head>
 <body>
+    <div id="invenA" style="position: absolute; bottom: 85%; left: 7%; transform: translateX(-50%); margin-bottom: -30px;">
+        <image class="btnClaim" src="UIs/inven.png" style="width: 100px; height: auto;">
+    </div>
+    <div id="invenB" style="position: absolute; bottom: 85%; left: 15%; transform: translateX(-50%); margin-bottom: -30px;">
+        <image class="btnClaim" src="UIs/inven.png" style="width: 100px; height: auto;">
+    </div>
+    <div id="invenC" style="position: absolute; bottom: 85%; left: 23%; transform: translateX(-50%); margin-bottom: -30px;">
+        <image class="btnClaim" src="UIs/inven.png" style="width: 100px; height: auto;">
+    </div>
+    <div id="invenD" style="position: absolute; bottom: 85%; left: 31%; transform: translateX(-50%); margin-bottom: -30px;">
+        <image class="btnClaim" src="UIs/inven.png" style="width: 100px; height: auto;">
+    </div>
+    <div id="leftB" style="position: absolute; bottom: 50%; left: 5%; transform: translateX(-50%); margin-bottom: -30px;">
+        <input type = 'image' class="btnClaim" src="UIs/camLB.png" style="width: 70px; height: auto;">
+    </div>
+    <div id="rightB" style="position: absolute; bottom: 50%; left: 95%; transform: translateX(-50%); margin-bottom: -30px;">
+        <input type = 'image' class="btnClaim" src="UIs/camRB.png" style="width: 70px; height: auto;">
+    </div>
+	
     <script type="importmap">
         {
           "imports": {
@@ -23,6 +42,19 @@
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
         import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
+	let currentPos = 0;
+	    
+	//UI configs
+        invenA.style.display = 'block';
+        invenB.style.display = 'block';
+        invenC.style.display = 'block';
+        invenD.style.display = 'block';
+
+        leftB.addEventListener('click', toggleCamL);
+        leftB.style.display = 'block';
+        rightB.addEventListener('click', toggleCamR);
+        rightB.style.display = 'block';
+	    
         var scene = new THREE.Scene();
         var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
         camera.position.set(0, 1, 3); //0, 1, 2
@@ -157,6 +189,24 @@
                 //Show settings screen
             }
         };
+
+	function toggleCamL() {
+            camera.rotation.y += Math.PI / 2;
+            if (currentPos > 0) {
+                currentPos --;
+            } else {
+                currentPos = 3;
+            } 
+        }
+
+        function toggleCamR() {
+            camera.rotation.y += -Math.PI / 2;
+            if (currentPos < 3) {
+                currentPos++;
+            } else {
+                currentPos = 0;
+            } 
+        }
 
 
         function animation() {
