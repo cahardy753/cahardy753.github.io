@@ -111,7 +111,17 @@
 
 	//3D Models
 	const loader = new GLTFLoader();
-
+        //load small lamp
+    loader.load('smallLamp.glb', function (gltf) {
+        let smallLamp = gltf.scene;
+        smallLamp.scale.set(1,1,1);
+        smallLamp.position.y = .675;
+        smallLamp.position.x = 2;
+        smallLamp.position.z = .75;
+        scene.add(smallLamp);
+        }, undefined, function ( error ) {
+            console.error(error);
+        } );
         //load chest drawers into scene
 	loader.load( 'CHEST_OF_DRAWER.glb', function ( gltf ) {
         var drawer = gltf.scene;
