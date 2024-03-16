@@ -111,17 +111,37 @@
 
 	//3D Models
 	const loader = new GLTFLoader();
-        loader.load( 'CHEST_OF_DRAWER.glb', function ( gltf ) {
-            var drawer = gltf.scene;
-            drawer.scale.set(.7,.7,.7);
-            drawer.position.y = .21;
-            drawer.position.x = .25;
-            drawer.position.z = .55;
-            drawer.rotation.y = (-Math.PI/2);
-            scene.add(drawer);
+
+        //load chest drawers into scene
+	loader.load( 'CHEST_OF_DRAWER.glb', function ( gltf ) {
+        var drawer = gltf.scene;
+        drawer.scale.set(.7,.7,.7);
+        drawer.position.y = .21;
+        drawer.position.x = .25;
+        drawer.position.z = .55;
+        drawer.rotation.y = (-Math.PI/2);
+        scene.add(drawer);
         }, undefined, function ( error ) {
 	        console.error( error );
         } );
+
+        //load old bed into scene
+    	loader.load( 'oldBed.glb', function (gltf) {
+        let oldBed = gltf.scene; //create object
+        let oldBedModel = gltf.scene.children[0];
+        let oldBedBody = oldBedModel.getObjectByName('body');
+        oldBedModel.material = new THREE.MeshStandardMaterial( {
+            color: 0xda8603, metalness: .4, roughness: 0.0, name: 'burnt orange'
+        } )
+        oldBed.scale.set(.8,.8,.9);
+        oldBed.position.y = 0;
+        oldBed.position.x = .125;
+        oldBed.position.z = -.125;
+        oldBed.rotation.y = (-Math.PI/2);
+        scene.add(oldBed);
+    	}, undefined, function ( error ) {
+	    console.error( error );
+    	})
 	//goes from here
         
         document.addEventListener("keydown", onDocumentKeyDown, false); //For key binding
