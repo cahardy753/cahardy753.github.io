@@ -34,12 +34,8 @@
 	    
 	//Basic Backgrounds
         //Light
-        var directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
-        directionalLight.position.set(0, 3, 0); // Direct the light downwards
-        scene.add(directionalLight);
-
-        var mainLight = new THREE.PointLight(0xffffff, 1.5);
-        mainLight.position.set(0, 2.7, 0.5);
+        var mainLight = new THREE.PointLight(0xffffff, 5);
+        mainLight.position.set(0, 1.5, 3);
         scene.add(mainLight);
 
         //Floor
@@ -58,32 +54,38 @@
         scene.add( floor );
 
         //Ceiling
-        var ceilTexture = new THREE.TextureLoader().load( "textures/tempC.jpg" );
-        ceilTexture.wrapS = ceilTexture.wrapT = THREE.RepeatWrapping;
-        ceilTexture.repeat.set( 1, 1 );
-        ceilTexture.anisotropy = 16;
-        ceilTexture.encoding = THREE.sRGBEncoding;
+        var celingTexture = new THREE.TextureLoader().load( "textures/tempC.jpg" );
+        celingTexture.wrapS = celingTexture.wrapT = THREE.RepeatWrapping;
+        celingTexture.repeat.set( 1, 1 );
+        celingTexture.anisotropy = 16;
+        celingTexture.encoding = THREE.sRGBEncoding;
 
-		var ceilMaterial = new THREE.MeshStandardMaterial( { map: ceilTexture } );
+		var celingMaterial = new THREE.MeshStandardMaterial( { map: celingTexture, side: THREE.DoubleSide } );
 
-        geometry = new THREE.PlaneGeometry( 6, 6 );
-        var ceiling = new THREE.Mesh( geometry, ceilMaterial );
-        ceiling.rotation.x = - Math.PI / 2;
-        ceiling.position.y = 2.5;
-        ceiling.position.z = 3;
-        scene.add( ceiling );
+        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 6, 6 ), celingMaterial );
+		mesh.position.y = 2.5;
+        mesh.position.z = 3;
+		mesh.rotation.x = -Math.PI/2;
+		mesh.receiveShadow = true;
+		scene.add( mesh );
 
         //Front Wall
+        var wallTexture = new THREE.TextureLoader().load( "textures/tempWall.jpg" );
+        wallTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
+        wallTexture.repeat.set( 1, 1 );
+        wallTexture.anisotropy = 16;
+        wallTexture.encoding = THREE.sRGBEncoding;
+
+		var wallMaterial = new THREE.MeshStandardMaterial( { map: wallTexture } );
+
         geometry = new THREE.PlaneGeometry( 6, 3 );
-        var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.DoubleSide} );
-        var wallFront = new THREE.Mesh( geometry, material );
+        var wallFront = new THREE.Mesh( geometry, wallMaterial );
         wallFront.position.y = 1;
         scene.add( wallFront );
 
         //Left Wall
         geometry = new THREE.PlaneGeometry( 6, 3 );
-        material = new THREE.MeshBasicMaterial( {color: 0xff00ff, side: THREE.DoubleSide} );
-        var wallLeft = new THREE.Mesh( geometry, material );
+        var wallLeft = new THREE.Mesh( geometry, wallMaterial );
         wallLeft.position.y = 1;
         wallLeft.position.x = -3;
         wallLeft.position.z = 3;
@@ -92,8 +94,7 @@
 
         //Right Wall
         geometry = new THREE.PlaneGeometry( 6, 3 );
-        material = new THREE.MeshBasicMaterial( {color: 0xff00ff, side: THREE.DoubleSide} );
-        var wallRight = new THREE.Mesh( geometry, material );
+        var wallRight = new THREE.Mesh( geometry, wallMaterial );
         wallRight.position.y = 1;
         wallRight.position.x = 3;
         wallRight.position.z = 3;
@@ -102,8 +103,7 @@
 
         //Back Wall
         geometry = new THREE.PlaneGeometry( 6, 3 );
-        material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.DoubleSide} );
-        var wallBack = new THREE.Mesh( geometry, material );
+        var wallBack = new THREE.Mesh( geometry, wallMaterial );
         wallBack.position.y = 1;
         wallBack.position.z = 6;
         wallBack.rotation.y = Math.PI;
