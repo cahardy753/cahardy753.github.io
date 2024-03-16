@@ -53,13 +53,16 @@
         rightB.addEventListener('click', toggleCamR);
         rightB.style.display = 'block';
 	
-        var scene = new THREE.Scene();
-        var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+        var scene = new THREE.Scene(); //create scene
+        var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 ); //create camera
         camera.position.set(0, 1, 3); //0, 1, 2
 
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( renderer.domElement );
+
+        const listener = new THREE.AudioListener();//create a listener and add it to camera
+        camera.add( listener );
 
 	    
 	//Basic Backgrounds
@@ -166,13 +169,12 @@
         } );
 
         //load old bed into scene
-    	loader.load( '/models/oldBed.glb', function (gltf) {
+    loader.load( '/models/oldBed.glb', function (gltf) {
         let oldBed = gltf.scene; //create object
         let oldBedModel = gltf.scene.children[0];
         let oldBedBody = oldBedModel.getObjectByName('body');
-        oldBedModel.material = new THREE.MeshStandardMaterial( {
-            color: 0xda8603, metalness: .4, roughness: 0.0, name: 'burnt orange'
-        } )
+
+        oldBedModel.material = new THREE.MeshStandardMaterial( {color: 0xda8603, metalness: .4, roughness: 0.0, name: 'burnt orange'} );
         oldBed.scale.set(.8,.8,.9);
         oldBed.position.y = 0;
         oldBed.position.x = .125;
@@ -180,10 +182,22 @@
         oldBed.rotation.y = (-Math.PI/2);
         scene.add(oldBed);
     	}, undefined, function ( error ) {
-	    console.error( error );
+	        console.error( error );
     	})
 	//goes from here
-        
+    //sound/Music      
+
+        // create a global audio source
+        const sound = new THREE.Audio( listener );
+
+        // load a sound and set it as the Audio object's buffer
+    const audioLoader = new THREE.AudioLoader();
+    audioLoader.load( 'Sounds/JohnnyGuitar.ogg', function( buffer ) {
+        sound.setBuffer( buffer );
+        sound.setLoop( true );
+        sound.setVolume( 0.5 );
+        sound.play();
+    });    
         document.addEventListener("keydown", onDocumentKeyDown, false); //For key binding
 
         function onDocumentKeyDown(event) {
