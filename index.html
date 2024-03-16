@@ -80,6 +80,9 @@
         let drawer, intersects;
         let drawerOpened, start = false;
 
+	const listener = new THREE.AudioListener();//create a listener and add it to camera
+        camera.add( listener );
+	    
 	const pg = new THREE.Audio( listener );
 
         // load a sound and set it as the Audio object's buffer
@@ -116,8 +119,7 @@
         renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( renderer.domElement );
 
-        const listener = new THREE.AudioListener();//create a listener and add it to camera
-        camera.add( listener );
+        
 
 	    
 	//Basic Backgrounds
