@@ -48,6 +48,9 @@
     <div id="inspect1" style="position: absolute; bottom: 42%; left: 17%; transform: translateX(-50%); margin-bottom: -30px;">
         <image class="btnClaim" src="UIs/mag.png" style="width: 50px; height: auto;">
     </div>
+    <div id="inspect2" style="position: absolute; bottom: 42%; left: 58%; transform: translateX(-50%); margin-bottom: -30px;">
+        <image class="btnClaim" src="UIs/mag.png" style="width: 50px; height: auto;">
+    </div>
     <div id="temp" style="position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%); margin-bottom: -30px;">
         <image class="btnClaim" src="UIs/letter_acq.png" style="width: 700px; height: auto;">
     </div>
@@ -59,6 +62,46 @@
     </div>
     <div id="time">
         Press Space to Start
+    </div>
+
+    <div id="pwStructure" style="position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%); margin-bottom: -30px;">
+        <image class="btnClaim" src="UIs/psInput.png" style="width: 700px; height: auto;">
+    </div>
+    <div id="pw1" style="position: absolute; bottom: 55%; left: 38%; transform: translateX(-50%); margin-bottom: -30px;">
+        <input type = 'image' class="btnClaim" src="UIs/NumButtons/1.png" style="width: 120px; height: auto;">
+    </div>
+    <div id="pw2" style="position: absolute; bottom: 55%; left: 50%; transform: translateX(-50%); margin-bottom: -30px;">
+        <input type = 'image' class="btnClaim" src="UIs/NumButtons/2.png" style="width: 120px; height: auto;">
+    </div>
+    <div id="pw3" style="position: absolute; bottom: 55%; left: 62%; transform: translateX(-50%); margin-bottom: -30px;">
+        <input type = 'image' class="btnClaim" src="UIs/NumButtons/3.png" style="width: 120px; height: auto;">
+    </div>
+    <div id="pw4" style="position: absolute; bottom: 40%; left: 38%; transform: translateX(-50%); margin-bottom: -30px;">
+        <input type = 'image' class="btnClaim" src="UIs/NumButtons/4.png" style="width: 120px; height: auto;">
+    </div>
+    <div id="pw5" style="position: absolute; bottom: 40%; left: 50%; transform: translateX(-50%); margin-bottom: -30px;">
+        <input type = 'image' class="btnClaim" src="UIs/NumButtons/5.png" style="width: 120px; height: auto;">
+    </div>
+    <div id="pw6" style="position: absolute; bottom: 40%; left: 62%; transform: translateX(-50%); margin-bottom: -30px;">
+        <input type = 'image' class="btnClaim" src="UIs/NumButtons/6.png" style="width: 120px; height: auto;">
+    </div>
+    <div id="pw7" style="position: absolute; bottom: 25%; left: 38%; transform: translateX(-50%); margin-bottom: -30px;">
+        <input type = 'image' class="btnClaim" src="UIs/NumButtons/7.png" style="width: 120px; height: auto;">
+    </div>
+    <div id="pw8" style="position: absolute; bottom: 25%; left: 50%; transform: translateX(-50%); margin-bottom: -30px;">
+        <input type = 'image' class="btnClaim" src="UIs/NumButtons/8.png" style="width: 120px; height: auto;">
+    </div>
+    <div id="pw9" style="position: absolute; bottom: 25%; left: 62%; transform: translateX(-50%); margin-bottom: -30px;">
+        <input type = 'image' class="btnClaim" src="UIs/NumButtons/9.png" style="width: 120px; height: auto;">
+    </div>
+    <div id="pw0" style="position: absolute; bottom: 12%; left: 50%; transform: translateX(-50%); margin-bottom: -30px;">
+        <input type = 'image' class="btnClaim" src="UIs/NumButtons/0.png" style="width: 120px; height: auto;">
+    </div>
+    <div id="pwClear" style="position: absolute; bottom: 12%; left: 38%; transform: translateX(-50%); margin-bottom: -30px;">
+        <input type = 'image' class="btnClaim" src="UIs/NumButtons/close.png" style="width: 120px; height: auto;">
+    </div>
+    <div id="pwOpen" style="position: absolute; bottom: 12%; left: 62%; transform: translateX(-50%); margin-bottom: -30px;">
+        <input type = 'image' class="btnClaim" src="UIs/NumButtons/open.png" style="width: 120px; height: auto;">
     </div>
 	
     <script type="importmap">
@@ -83,9 +126,24 @@
 	//UI configs
         inspect0.style.display = 'none';
 	inspect1.style.display = 'none';
+    	inspect2.style.display = 'none';
         temp.style.display = 'none';
         closeB.style.display = 'none';
         letter.style.display = 'none';
+
+        pwStructure.style.display = 'none';
+        pw0.style.display = 'none';
+        pw1.style.display = 'none';
+        pw2.style.display = 'none';
+        pw3.style.display = 'none';
+        pw4.style.display = 'none';
+        pw5.style.display = 'none';
+        pw6.style.display = 'none';
+        pw7.style.display = 'none';
+        pw8.style.display = 'none';
+        pw9.style.display = 'none';
+        pwClear.style.display = 'none';
+        pwOpen.style.display = 'none';
 
         leftB.addEventListener('click', toggleCamL);
         rightB.addEventListener('click', toggleCamR);
@@ -203,6 +261,7 @@
         geometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
         var material = new THREE.MeshBasicMaterial( { color: 0xff0f00 } );
         const cube = new THREE.Mesh( geometry, material );
+	interactObjs.push(cube);
         cube.position.y = -100;
         scene.add( cube );
 
@@ -246,6 +305,19 @@
         oldBed.position.z = -.125;
         oldBed.rotation.y = (-Math.PI/2);
         scene.add(oldBed);
+    	}, undefined, function ( error ) {
+	        console.error( error );
+    	})
+
+	    loader.load( '/models/safe/scene.gltf', function (gltf) {
+        let safe = gltf.scene; //create object
+        safe.scale.set(.008, 0.008, 0.008);
+        safe.position.y = 0;
+        safe.position.x = -2.7;
+        safe.position.z = 3;
+        safe.rotation.y = Math.PI/2;
+        interactObjs.push(safe);
+        scene.add(safe);
     	}, undefined, function ( error ) {
 	        console.error( error );
     	})
@@ -321,6 +393,8 @@
                         inspect0.style.display = 'block';
                     } else if (currentPos == 1) {
                         inspect1.style.display = 'block';
+                    } else if (currentPos == 3) {
+                        inspect2.style.display = 'block';
                     }
                     return;
                     }
@@ -344,6 +418,7 @@
             // Reset
             inspect0.style.display = 'none';
 	    inspect1.style.display = 'none';
+		inspect2.style.display = 'none';
         }
 
         function onClick() {
@@ -352,10 +427,30 @@
                     if (intersect.object === cube) {
                         return;
                     } else {
-                        temp.style.display = 'block';
-                        closeB.style.display = 'block';
-                        drawerOpened = true;
-                        pg.play();
+                        if (currentPos == 0 || currentPos == 1) {
+                            temp.style.display = 'block';
+                            closeB.style.display = 'block';
+                            drawerOpened = true;
+                            pg.play();
+                        }
+                        else if (currentPos == 3) {
+                            if (!safeUnlock) {
+                                pwStructure.style.display = 'block';
+                                pw0.style.display = 'block';
+                                pw1.style.display = 'block';
+                                pw2.style.display = 'block';
+                                pw3.style.display = 'block';
+                                pw4.style.display = 'block';
+                                pw5.style.display = 'block';
+                                pw6.style.display = 'block';
+                                pw7.style.display = 'block';
+                                pw8.style.display = 'block';
+                                pw9.style.display = 'block';
+                                pwClear.style.display = 'block';
+                                pwOpen.style.display = 'block';
+				closeB.style.display = 'block';
+                            }
+                        }
                         return;
                     }
                 }
@@ -365,6 +460,19 @@
         function closeScr() {
             temp.style.display = 'none';
             closeB.style.display = 'none';
+	    pwStructure.style.display = 'none';
+        pw0.style.display = 'none';
+        pw1.style.display = 'none';
+        pw2.style.display = 'none';
+        pw3.style.display = 'none';
+        pw4.style.display = 'none';
+        pw5.style.display = 'none';
+        pw6.style.display = 'none';
+        pw7.style.display = 'none';
+        pw8.style.display = 'none';
+        pw9.style.display = 'none';
+        pwClear.style.display = 'none';
+        pwOpen.style.display = 'none';
         }
 
         function letterOpen(){ 
