@@ -216,19 +216,7 @@
 	        console.error( error );
     	})
 	//goes from here
-    //sound/Music      
-
-    // create a global audio source
-    const sound = new THREE.Audio( listener );
-
-        // load a sound and set it as the Audio object's buffer
-    const audioLoader = new THREE.AudioLoader();
-    audioLoader.load( 'Sounds/JohnnyGuitar.ogg', function( buffer ) {
-        sound.setBuffer( buffer );
-        sound.setLoop( true );
-        sound.setVolume( 0.5 );
-        sound.play();
-    });    
+        
         document.addEventListener("keydown", onDocumentKeyDown, false); //For key binding
 
         function onDocumentKeyDown(event) {
@@ -243,7 +231,7 @@
             }
         };
 
-	function toggleCamL() {
+	    function toggleCamL() {
             camera.rotation.y += Math.PI / 2;
         }
 
@@ -252,6 +240,9 @@
         }
 
 	//raycaster fcns
+        
+        let playMusicFlag = false;
+
         function onPtrMove(event) {
             ptr.x = (event.clientX / window.innerWidth) * 2 - 1;
             ptr.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -268,6 +259,21 @@
                     return;
                 }
             }
+
+            //check for music flag
+            if (playMusicFlag == false) {
+                const sound = new THREE.Audio( listener );
+            // load a sound and set it as the Audio object's buffer
+                const audioLoader = new THREE.AudioLoader();
+                audioLoader.load( 'Sounds/JohnnyGuitar.ogg', function( buffer ) {
+                    sound.setBuffer( buffer );
+                    sound.setLoop( true );
+                    sound.setVolume( 0.5 );
+                    sound.play();
+                });
+                playMusicFlag = true;
+            }
+            
 
             // Reset
             inspect.style.display = 'none';
