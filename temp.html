@@ -33,26 +33,81 @@
 
 	    
 	//Basic Backgrounds
+        //Light
+        var directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+        directionalLight.position.set(0, 3, 0); // Direct the light downwards
+        scene.add(directionalLight);
+
+        var mainLight = new THREE.PointLight(0xffffff, 1.5);
+        mainLight.position.set(0, 2.7, 0.5);
+        scene.add(mainLight);
+
+        //Floor
+        var groundTexture = new THREE.TextureLoader().load( "textures/floor.jpg" );
+        groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
+        groundTexture.repeat.set( 1, 1 );
+        groundTexture.anisotropy = 16;
+        groundTexture.encoding = THREE.sRGBEncoding;
+
+		var groundMaterial = new THREE.MeshStandardMaterial( { map: groundTexture } );
+
         var geometry = new THREE.PlaneGeometry( 6, 6 );
-        var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
-        var floor = new THREE.Mesh( geometry, material );
+        var floor = new THREE.Mesh( geometry, groundMaterial );
         floor.rotation.x = - Math.PI / 2;
         floor.position.z = 3;
         scene.add( floor );
 
-        geometry = new THREE.PlaneGeometry( 6, 3 );
-        material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.DoubleSide} );
-        var wallFront = new THREE.Mesh( geometry, material );
-        wallFront.position.y = 1;
-        scene.add( wallFront );
+        //Ceiling
+        var ceilTexture = new THREE.TextureLoader().load( "textures/tempC.jpg" );
+        ceilTexture.wrapS = ceilTexture.wrapT = THREE.RepeatWrapping;
+        ceilTexture.repeat.set( 1, 1 );
+        ceilTexture.anisotropy = 16;
+        ceilTexture.encoding = THREE.sRGBEncoding;
+
+		var ceilMaterial = new THREE.MeshStandardMaterial( { map: ceilTexture } );
 
         geometry = new THREE.PlaneGeometry( 6, 6 );
-        material = new THREE.MeshBasicMaterial( {color: 0x00ffff, side: THREE.DoubleSide} );
-        var ceiling = new THREE.Mesh( geometry, material );
+        var ceiling = new THREE.Mesh( geometry, ceilMaterial );
         ceiling.rotation.x = - Math.PI / 2;
         ceiling.position.y = 2.5;
         ceiling.position.z = 3;
         scene.add( ceiling );
+
+        //Front Wall
+        geometry = new THREE.PlaneGeometry( 6, 3 );
+        var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.DoubleSide} );
+        var wallFront = new THREE.Mesh( geometry, material );
+        wallFront.position.y = 1;
+        scene.add( wallFront );
+
+        //Left Wall
+        geometry = new THREE.PlaneGeometry( 6, 3 );
+        material = new THREE.MeshBasicMaterial( {color: 0xff00ff, side: THREE.DoubleSide} );
+        var wallLeft = new THREE.Mesh( geometry, material );
+        wallLeft.position.y = 1;
+        wallLeft.position.x = -3;
+        wallLeft.position.z = 3;
+        wallLeft.rotation.y = Math.PI / 2;
+        scene.add( wallLeft );
+
+        //Right Wall
+        geometry = new THREE.PlaneGeometry( 6, 3 );
+        material = new THREE.MeshBasicMaterial( {color: 0xff00ff, side: THREE.DoubleSide} );
+        var wallRight = new THREE.Mesh( geometry, material );
+        wallRight.position.y = 1;
+        wallRight.position.x = 3;
+        wallRight.position.z = 3;
+        wallRight.rotation.y = - Math.PI / 2;
+        scene.add( wallRight );
+
+        //Back Wall
+        geometry = new THREE.PlaneGeometry( 6, 3 );
+        material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.DoubleSide} );
+        var wallBack = new THREE.Mesh( geometry, material );
+        wallBack.position.y = 1;
+        wallBack.position.z = 6;
+        wallBack.rotation.y = Math.PI;
+        scene.add( wallBack );
 
 	//3D Models
 	//goes from here
@@ -61,9 +116,9 @@
 
         function onDocumentKeyDown(event) {
             var keyCode = event.which;
-            if (keyCode == 37) {
+            if (keyCode == 37) { //if leftArrow key is pressed, rotate the cam by -90`
                 camera.rotation.y += Math.PI / 2;        
-            } else if (keyCode == 39) {
+            } else if (keyCode == 39) { //if rightArrow key is pressed, rotate the cam by 90`
                 camera.rotation.y += -Math.PI / 2;
             }
             if (keyCode == 27) {
