@@ -208,7 +208,7 @@
         oldBedModel.material = new THREE.MeshStandardMaterial( {color: 0xda8603, metalness: .4, roughness: 0.0, name: 'burnt orange'} );
         oldBed.scale.set(.8,.8,.9);
         oldBed.position.y = 0;
-        oldBed.position.x = .125;
+        oldBed.position.x = 0;
         oldBed.position.z = -.125;
         oldBed.rotation.y = (-Math.PI/2);
         scene.add(oldBed);
@@ -218,8 +218,8 @@
 	//goes from here
     //sound/Music      
 
-        // create a global audio source
-        const sound = new THREE.Audio( listener );
+    // create a global audio source
+    const sound = new THREE.Audio( listener );
 
         // load a sound and set it as the Audio object's buffer
     const audioLoader = new THREE.AudioLoader();
