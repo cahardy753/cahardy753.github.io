@@ -79,6 +79,16 @@
         let interactObjs = [];
         let drawer, intersects;
         let drawerOpened, start = false;
+
+	const pg = new THREE.Audio( listener );
+
+        // load a sound and set it as the Audio object's buffer
+	const audioLoader = new THREE.AudioLoader();
+        audioLoader.load( 'Sounds/pgTurn.wav', function( buffer ) {
+            pg.setBuffer( buffer );
+            pg.setLoop( false );
+            pg.setVolume( 0.5 );
+        });  
 	    
 	//UI configs
         inspect0.style.display = 'none';
@@ -319,7 +329,6 @@
             if (playMusicFlag == false) {
                 const sound = new THREE.Audio( listener );
             // load a sound and set it as the Audio object's buffer
-                const audioLoader = new THREE.AudioLoader();
                 audioLoader.load( 'Sounds/JohnnyGuitar.ogg', function( buffer ) {
                     sound.setBuffer( buffer );
                     sound.setLoop( true );
