@@ -25,17 +25,24 @@
 
         var scene = new THREE.Scene();
         var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-        camera.position.set(9, 1.5, 3);
+        camera.position.set(0, 1.5, 3);
 
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( renderer.domElement );
 
-        const geometry = new THREE.PlaneGeometry( 10, 1 );
-        const material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
-        const floor = new THREE.Mesh( geometry, material );
-        floor.position.x = 7;
+        var geometry = new THREE.PlaneGeometry( 6, 1.5 );
+        var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+        var floor = new THREE.Mesh( geometry, material );
+        floor.rotation.x = - Math.PI / 2;
         scene.add( floor );
+
+        geometry = new THREE.PlaneGeometry( 6, 3 );
+        material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.DoubleSide} );
+        var wallFront = new THREE.Mesh( geometry, material );
+        wallFront.position.y = 1;
+        wallFront.position.z = -0.5;
+        scene.add( wallFront );
 
         function animation() {
             requestAnimationFrame( animation );
