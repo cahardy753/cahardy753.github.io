@@ -27,7 +27,10 @@
     <div id="rightB" style="position: absolute; bottom: 50%; left: 95%; transform: translateX(-50%); margin-bottom: -30px;">
         <input type = 'image' class="btnClaim" src="UIs/camRB.png" style="width: 70px; height: auto;">
     </div>
-    <div id="inspect" style="position: absolute; bottom: 40%; left: 75%; transform: translateX(-50%); margin-bottom: -30px;">
+    <div id="inspect0" style="position: absolute; bottom: 40%; left: 75%; transform: translateX(-50%); margin-bottom: -30px;">
+        <image class="btnClaim" src="UIs/mag.png" style="width: 50px; height: auto;">
+    </div>
+    <div id="inspect1" style="position: absolute; bottom: 42%; left: 17%; transform: translateX(-50%); margin-bottom: -30px;">
         <image class="btnClaim" src="UIs/mag.png" style="width: 50px; height: auto;">
     </div>
     <div id="temp" style="position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%); margin-bottom: -30px;">
@@ -57,10 +60,11 @@
 	let currentPos = 0;
         let interactObjs = [];
         let drawer, intersects;
-        let drawerOpened = false;
+        let drawerOpened, start = false;
 	    
 	//UI configs
-        inspect.style.display = 'none';
+        inspect0.style.display = 'none';
+	inspect1.style.display = 'none';
         temp.style.display = 'none';
         closeB.style.display = 'none';
         letter.style.display = 'none';
@@ -221,22 +225,51 @@
 
         function onDocumentKeyDown(event) {
             var keyCode = event.which;
-            if (keyCode == 37) { //if leftArrow key is pressed, rotate the cam by -90`
-                camera.rotation.y += Math.PI / 2;        
-            } else if (keyCode == 39) { //if rightArrow key is pressed, rotate the cam by 90`
-                camera.rotation.y += -Math.PI / 2;
+            if (start) {    //only works when game start is true
+                if (keyCode == 37) { //if leftArrow key is pressed, rotate the cam by -90`
+                    camera.rotation.y += Math.PI / 2;
+                    if (currentPos != 0) {
+                        currentPos --;
+                    } else {
+                        currentPos = 3;
+                    }
+                } else if (keyCode == 39) { //if rightArrow key is pressed, rotate the cam by 90`
+                    camera.rotation.y += -Math.PI / 2;
+                    if (currentPos != 3) {
+                        currentPos ++;
+                    } else {
+                        currentPos = 0;
+                    }
+                } else if (keyCode == 27) {
+                    //Show settings screen
+                }
             }
-            if (keyCode == 27) {
-                //Show settings screen
+            if (keyCode == 32) {
+                time.style.display = 'none';
+                start = true;
             }
         };
 
 	    function toggleCamL() {
-            camera.rotation.y += Math.PI / 2;
+            if (start) {
+                camera.rotation.y += Math.PI / 2;
+                if (currentPos != 0) {
+                        currentPos --;
+                    } else {
+                        currentPos = 3;
+                }
+            }
         }
 
         function toggleCamR() {
-            camera.rotation.y += -Math.PI / 2;
+            if (start) {
+                camera.rotation.y += -Math.PI / 2;
+                if (currentPos != 3) {
+                        currentPos ++;
+                    } else {
+                        currentPos = 0;
+                }
+            } 
         }
 
 	//raycaster fcns
@@ -250,13 +283,17 @@
             raycaster.setFromCamera(ptr, camera);
 
             for (const intersect of intersects) {
-                console.log(intersect.object);
-                if (intersect.object === cube) {
+                if (start) {
+                    if (intersect.object === cube) {
                     return;
                 } else {
-                    inspect.style.display = 'block';
-                    console.log(intersect.object);
+                    if (currentPos == 0) {
+                        inspect0.style.display = 'block';
+                    } else if (currentPos == 1) {
+                        inspect1.style.display = 'block';
+                    }
                     return;
+                    }
                 }
             }
 
@@ -276,18 +313,22 @@
             
 
             // Reset
-            inspect.style.display = 'none';
+            inspect0.style.display = 'none';
+	    inspect1.style.display = 'none';
         }
 
         function onClick() {
-            for (const intersect of intersects) {
-                if (intersect.object === cube) {
-                    return;
-                } else {
-                    temp.style.display = 'block';
-                    closeB.style.display = 'block';
-                    drawerOpened = true;
-                    return;
+            if (start) {
+                for (const intersect of intersects) {
+                    if (intersect.object === cube) {
+                        return;
+                    } else {
+                        temp.style.display = 'block';
+                        closeB.style.display = 'block';
+                        drawerOpened = true;
+                        pg.play();
+                        return;
+                    }
                 }
             }
         }
@@ -304,6 +345,10 @@
 
         function animation() {
             requestAnimationFrame( animation );
+
+		if (drawerOpened) {
+			letter.style.display = 'block';
+		}
 	        renderer.render( scene, camera );
         }
 
