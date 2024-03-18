@@ -325,6 +325,9 @@
         
         document.addEventListener("keydown", onDocumentKeyDown, false); //For key binding
 
+	let playMusicFlag = false;
+        let musicVolume = .5;
+	    
         function onDocumentKeyDown(event) {
             var keyCode = event.which;
             if (start) {    //only works when game start is true
@@ -344,11 +347,29 @@
                     }
                 } else if (keyCode == 27) {
                     //Show settings screen
+                } else if (keyCode == 38) /*arrow up volume up*/{
+                    musicVolume += .05;
+                    bgMusic.setVolume(musicVolume);
+                } else if (keyCode == 40) /*arrow volume down*/ {
+                    musicVolume = bgMusic.getVolume();
+                    bgMusic.setVolume(musicVolume);
                 }
             }
             if (keyCode == 32) {
                 time.style.display = 'none';
                 start = true;
+		//check for music flag
+                if (playMusicFlag == false) {
+                    const bgMusic = new THREE.Audio( listener );
+                // load a sound and set it as the Audio object's buffer
+                    audioLoader.load( 'Sounds/JohnnyGuitar.ogg', function( buffer ) {
+                        bgMusic.setBuffer( buffer );
+                        bgMusic.setLoop( true );
+                        bgMusic.setVolume( .5 );
+                        bgMusic.play();
+                    });
+                    playMusicFlag = true;
+                }
             }
         };
 
